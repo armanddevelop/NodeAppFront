@@ -1,28 +1,24 @@
+import { BrowserRouter as Router } from "react-router-dom";
+import { List } from "@mui/material";
 import { useUsers } from "../Hooks/useUsers";
-
-export const Users = () => {
+import { ListItems } from "./userList/ListItems";
+import { User } from "../interfaces/interfaces";
+interface UserProps {
+  setUserId: React.Dispatch<React.SetStateAction<User>>;
+}
+export const Users = (props: UserProps) => {
   const { usersList } = useUsers();
-
-  const handleClick = (id: string) => {
-    console.log("esto vale id ", id);
-  };
-
-  const ListItems = (props: any) => {
-    const { name, id } = props;
-    return (
-      <li value={id} onClick={() => handleClick(id)}>
-        {name}
-      </li>
-    );
-  };
-
+  const { setUserId } = props;
   return (
-    <ul>
-      <h1>Users</h1>
-
-      {usersList.map(({ name, _id: id }, idx) => {
-        return <ListItems name={name} id={id} key={idx} />;
-      })}
-    </ul>
+    <Router>
+      <List>
+        <h1>Users</h1>
+        {usersList.map(({ name, _id: id }, idx) => {
+          return (
+            <ListItems name={name} id={id} key={idx} setUserId={setUserId} />
+          );
+        })}
+      </List>
+    </Router>
   );
 };
